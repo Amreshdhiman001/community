@@ -1,0 +1,26 @@
+name: Assign Reviewers
+
+on:
+  pull_request:
+    types:
+      - opened
+      - synchronize
+
+jobs:
+  assign-reviewers:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set Reviewers
+        run: |
+          # Add your logic to determine reviewers dynamically
+          reviewers="user1 user2"
+
+          # Set reviewers for the PR
+          echo "Reviewers: $reviewers"
+          gh pr review-request -R $GITHUB_REPOSITORY -B $GITHUB_ACTOR -r $reviewers ${{ github.event.number }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
